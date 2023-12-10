@@ -1,0 +1,164 @@
+html, body {
+    display: grid;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background-color: rgb(255, 255, 255);
+    width: 100%;
+}
+
+header {
+    display: grid;
+    background-color: rgb(186, 186, 186);
+    align-items: center;
+    text-align: center;
+    width: 100%;
+}
+
+body {
+    display: grid;
+    align-items: center;
+    background-color: rgb(55, 51, 51);
+    text-align: center;
+    width: 100%;
+}
+
+
+footer {
+
+    background-color: rgb(255, 0, 0);
+    display: grid;
+    align-items: center;
+    width: 100%;
+    height: max-content;
+}
+
+#countdown {
+    font-size: 2em;
+    font-weight: bold;
+    display: block;
+    margin: 0 auto;
+    margin-top: 20px;
+    margin-bottom: 20px;
+   }
+
+
+.text-container {
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(105, 81, 20);
+    text-align: center;
+    width: 100%;
+}
+
+.startscreen {
+
+    background-color: rgb(29, 110, 83);
+    color: rgb(0, 0, 0);
+}
+
+.startscreen header {
+    color: aqua;
+    background-color: rgb(59, 59, 151) !important;
+    text-align: center;
+    flex: 50%;
+}
+
+
+.startscreen h1 {
+
+    background-color: rgb(0, 0, 0) !important;
+    color: blueviolet !important;
+
+}
+
+.startscreen h2 {
+    background-color: rgb(254, 218, 218) !important;
+    color: rgb(0, 0, 0) !important;
+}
+
+.startscreen p {
+    background-color: rgb(72, 28, 28) !important;
+    color: blueviolet !important;
+}
+
+.startscreen content {
+    background-color: chartreuse !important;
+
+}
+
+.startscreen button {
+    background-color: palevioletred;
+}
+
+
+.startscreen button:hover {
+    background-color: rgb(216, 189, 198);
+}
+
+
+.startscreen footer {
+    background-color: rgb(102, 129, 129) !;
+}
+
+
+
+
+
+.gamescreen {
+    background-color: pink;
+    flex: 60%;
+}
+
+
+.rundennummer {
+    font-size: 3em;
+    font-weight: bold;
+    display: block;
+    margin: 0 auto;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: repeat(2, 50vh);
+    height: 100vh;
+}
+
+
+.grid-item {
+    border: 1px solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    color: white;
+}
+
+.green-flash {
+    background-color: green !important;
+    transition: background-color 1s;
+}
+
+.gamescreen header {
+    flex: 20%;
+    background-color: rgb(71, 92, 255);
+}
+
+
+.gamescreen footer {
+    flex: 20%;
+    background-color: rgb(165, 103, 27);
+}
+
+
+.disable-graident {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+.correct {
+    background-color: #0f0 !important;
+  }

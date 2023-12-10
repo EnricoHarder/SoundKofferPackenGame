@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
+
+    <title>Soundkoffer-Packen</title>
+
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="manifest" href="manifest.json">
+
+    <meta name="theme-color" content="#3367d6">
+    <meta name="description" content="Soundkoffer-Packen">
+    <meta name="keywords" content="Soundkoffer, Soundkoffer">
+    <meta name="author" content="Enno">
+    <meta name="copyright" content="Enno">
+    <meta name="robots" content="index, follow">
+
+    <meta name="language" content="German">
+    <meta name="revisit-after" content="1 days">
+    <meta name="rating" content="general">
+    <meta name="distribution" content="global">
+</head>
+
+
+
+<body>
+
+    <header>
+        <!-- Inhalte des Startbildschirms hier einfügen -->
+        <h1>Soundkoffer-Packen</h1>
+    </header>
+
+
+    <div class="startscreen">
+
+        <div class="text-container">
+            <p>
+                Willkommen bei Soundkoffer-Packen
+
+            </p>
+        </div>
+
+        <button id="startbutton" onclick="showGameScreen()">Spiel starten...</button>
+
+    </div>
+
+
+    <div class="gamescreen" style="display: none;" id="gamescreen">
+        <oben>
+            <!-- Inhalte des Startbildschirms hier einfügen -->
+            <h1>Spiel Output</h1>
+
+            <span class="rundennummer">
+                1
+            </span>
+            <div id="countdown">5</div>
+
+        </oben>
+
+
+        <div class="grid-container">
+            <div class="grid-item disable-graident" onclick="playSound(this)">1</div>
+            <div class="grid-item disable-graident" onclick="playSound(this)">2</div>
+            <div class="grid-item disable-graident" onclick="playSound(this)">3</div>
+            <div class="grid-item disable-graident" onclick="playSound(this)" id="hut">4</div>
+
+        </div>
+
+        <unten>
+
+            SPIELPUNKTEANZEIGE
+
+            <p>
+
+                <button id="restartbutton" onclick="showStartScreen()">Spiel beenden...</button>
+
+            </p>
+
+        </unten>
+
+
+    </div>
+
+
+
+    <footer>
+
+        FOOTER INSGESAMT
+
+        <template>
+            <div id="app">
+                <!-- Dein Inhalt hier -->
+                <div class="footer">
+                    &copy; 2022 - Footer Text
+                </div>
+            </div>
+        </template>
+
+    </footer>
+
+    <script src="/js/script.js"></script>
+
+</body>
+
+</html>
