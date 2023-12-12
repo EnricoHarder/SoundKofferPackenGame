@@ -7,6 +7,9 @@ let highscoreScreen = document.getElementById("highscoreScreen");
 let currentState = document.getElementById("status");
 let anzahlMaximalerRunden = document.getElementById("anzahlMaxRunden");
 let rundennummer = document.getElementById("currentRoundNumber");
+// Countdown auf der Spielt-Start-Lade-Seite
+let countdownElement = document.getElementById('countdownElement');
+let countdown = countdownElement.innerHTML;
 // Liste der Board-Komponenten
 const gridItems = document.querySelectorAll('.grid-item');
 
@@ -46,6 +49,7 @@ let sounds = [new Audio('/sounds/butterbirne.mp3'), new Audio('/sounds/alarm.mp3
 
 // Methode, die aufgerufen wird, sofern der Startbutton getätigt wird
 function startGame() {
+    console.log('Das Spiel hat begonnen!');
     // starte bei Runde 1 beim ersten Start
     setCurrentRoundNr(1);
     // 2 Spieler Modus ohne CPU auslesen
@@ -60,16 +64,33 @@ function startGame() {
     if (onlyHumans) {
         showStartingDisplay();
         // start ShowClickPath
-        startHumanGame();
+        start2Game();
     } else {
+        showStartingDisplay();
         // start ShowClickPath
-        startround();
+        start2Game();
     }
 
 }
 
+let countdownInterval = setInterval(updateCountdown, 1000);
+function updateCountdown() {
+    $.get("/countdown", function (data) {
+        $("#countdown").text(data.countdown);
+    });
+
+    setInterval(updateCountdown, 1000);
+}
+
+function start2Game() {
+    console.log('Das Spiel hat begonnen!');
+    // Hier dein Spielstart-Code hinzufügen
+}
+
+
 function showStartingDisplay() {
-    document.getElementById('startBtn').addEventListener('click', function () {
+    document.getElementById('start-button').addEventListener('click', function () {
+        console.log('Das Spiel hat begonnen!');
         var overlay = document.getElementById('countdownOverlay');
         var cancelButton = document.getElementById('cancelButton');
         var countdownText = document.getElementById('countdownText');
@@ -77,6 +98,7 @@ function showStartingDisplay() {
         overlay.style.display = 'flex';
 
         var countdown = 4;
+
         var countdownTimer = setInterval(function () {
             countdown--;
             countdownText.textContent = 'Das Spiel wird gestartet in ' + countdown;

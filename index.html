@@ -53,10 +53,13 @@
                 <p>
                 <h2>Willkommen</h2>
                 <p>Drücken Sie auf "Spiel starten" um das Spiel zu beginnen.</p>
-                <button class="overlay" onclick="startGame()" id="start-button">Spiel starten</button>
+
+                <button class="start-button" onclick="startGame()" id="start-button">Spiel starten</button>
+                
                 <div id="countdownOverlay" class="overlay" style="display: none;">
+                    <div id="countdownElement">00:00</div>
                     <p id="countdownText">Das Spiel wird gestartet</p>
-                    <button id="cancelBtn">Abbrechen</button>
+                    <button id="cancelButton">Abbrechen</button>
                 </div>
                 </p>
 
