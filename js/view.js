@@ -8,8 +8,11 @@ let currentState = document.getElementById("status");
 let anzahlMaximalerRunden = document.getElementById("anzahlMaxRunden");
 let rundennummer = document.getElementById("currentRoundNumber");
 // Countdown auf der Spielt-Start-Lade-Seite
-let countdownElement = document.getElementById('countdownElement');
-let countdown = countdownElement.innerHTML;
+let startButton = document.getElementById('start-button');
+let overlay = document.getElementById('overlay');
+let countdown = document.getElementById('countdownElement');
+// Start Timer
+let interval;
 // Liste der Board-Komponenten
 const gridItems = document.querySelectorAll('.grid-item');
 
@@ -21,7 +24,7 @@ let onlyHumans = true;
 // wenn true, ist die APp im Show-Modus und der User schaut nur zu
 let showMode = false;
 let countdownToStart = 4;
-currentCountdownNumber = 0;
+let currentCountdownNumber = 0;
 
 
 let soundPlaylist = []; // Gesamte Playlist
@@ -61,16 +64,20 @@ function startGame() {
     generatePlaylists(anzahlMaximalerRunden);
     // show game and hide start screen
     giveGridsColors();
-    console.log('showStartingDisplay gestartet!');
+
     // display Game and make Startscreen unvisible
     // switchToGameScreen();
     // starte Spiel je nach Optionen mit oder ohne Computer
     if (onlyHumans) {
+        console.log('showStartingDisplay gestartet for humans!');
         showStartingDisplay();
         // start ShowClickPath
-        start2Game();
+         start2Game();
+         // anzeigen
+         console.log("Add Listener for cancel button");     console.log("Das Spiel wurde gestartet");
 
     } else {
+        console.log('showStartingDisplay gestartet for general!');
         showStartingDisplay();
         // start ShowClickPath
 
@@ -87,25 +94,50 @@ function start2Game() {
 
 function showStartingDisplay() {
     console.log('showStartingDisplay aufgerufen!');
-    document.getElementById("countdownOverlay").style.display = "block";
+    overlay.style.display = "block";
 }
 
 function startCountdown() {
-    // Update the countdown every second
-    if (currentCountdownNumber < countdownToStart) {
-        setTimeout(function () {
-            currentCountdownNumber++;
-            console.log('Countdown gestaret!');
-        }, 1000);
-    }
 
-    setTimeout(toggleOverlay, 4000);
+    let timerId = setTimeout(countdown, 1000);
+
+    console.log('countdown STARTEN aufgerufen!');
+    startButton.addEventListener('click', function () {
+        overlay.style.display = 'block';
+
+        let minutes = 0;
+        let seconds = 0;
+
+        interval = setInterval(function () {
+            if (seconds == 0) {
+                if (minutes == 0) {
+                    clearInterval(interval);
+                } else {
+                    minutes--;
+                    seconds = 60;
+                }
+            } else {
+                seconds--;
+            }
+
+            countdown.textContent = minutes.toString().padStart(2, '0') + ':' + seconds.toString().padStart(2, '0');
+        }, 1000);
+    })
+    console.log("Add Listener for cancel button 2");
+    
+    console.log('countdowm FERTIG aufgerufen!');
 }
 
 
-document.getElementById("cancelButton").addEventListener("click", function () {
-    document.getElementById("countdownElement").innerHTML = "STOPPED";
-});
+function stopCountdown() {
+    clearTimeout(timerId);
+}
+
+function showOverlay() {
+    // Anzeigen des Overlays
+    stopCountdown();
+}
+
 
 
 function startHumanGame(currentRoundNr) {
