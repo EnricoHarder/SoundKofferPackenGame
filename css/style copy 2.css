@@ -1,0 +1,185 @@
+html, body {
+    display: grid;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background-color: rgb(73, 68, 68);
+    width: 100%;
+}
+
+header {
+    display: grid;
+    background-color: rgb(73, 87, 38);
+    align-items: center;
+    text-align: center;
+    height: 10vh;
+}
+
+body {
+    display: grid;
+    align-items: center;
+    background-color: rgb(55, 51, 51);
+    text-align: center;
+    width: 100%;
+    height: 100%;
+}
+
+main {
+    display: none !important;
+}
+
+footer {
+    display: grid;
+    background-color: rgb(175, 207, 97);
+    align-items: center;
+    height: 10vh;
+}
+
+.options .anzahlMaxRunden {
+    width: 7%;
+    background-color: rgb(0, 0, 0);
+    color: rgb(250, 57, 57);
+    border: 0;
+    align-items: center;
+    text-align: center;
+}
+
+.options #soundpack {
+    background-color: rgb(0, 0, 0);
+    color: rgb(255, 0, 0);
+    border: 0;
+    align-items: center;
+    text-align: center;
+}
+
+.spielername {
+    width: 10vmax;
+    color: rgb(255, 0, 0);
+    background-color: transparent;
+    border: 0cqmin;
+}
+
+.spielernamelabel {
+    color: white;
+}
+
+
+
+.text-container {
+    display: grid;
+    align-items: center;
+    background-color: rgb(110, 97, 64);
+    text-align: center;
+    width: 100%;
+}
+
+.startscreen {
+    height: 60vh;
+    background-color: rgb(18, 17, 17);
+    color: rgb(0, 0, 0);
+    flex: 100%;
+    text-align: center;
+}
+
+.startscreen h1 {
+
+    background-color: rgb(0, 0, 0) !important;
+    color: rgb(255, 255, 255) !important;
+
+}
+
+.startscreen h2 {
+    background-color: rgb(254, 218, 218) !important;
+    color: rgb(0, 0, 0) !important;
+}
+
+.startscreen p {
+    background-color: rgb(0, 0, 0);
+    color: rgb(255, 255, 255);
+}
+
+.startscreen button {
+    background-color: rgb(123, 229, 123);
+    font-size: x-large;
+    color: black;
+    height: 20vh;
+    margin-top: 15vh;
+    margin-bottom: 15vh;
+    border-radius: 50%;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    -ms-border-radius: 50%;
+    -o-border-radius: 50%;
+}
+
+
+.startscreen button:hover {
+    background-color: rgb(255, 2, 86);
+}
+
+#countdown {
+    font-size: 2em;
+    font-weight: bold;
+    display: block;
+    margin: 0 auto;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+
+.gamescreen {
+    background-color: pink;
+    flex: 100%;
+}
+
+
+.rundennummer {
+    font-size: 3em;
+    font-weight: bold;
+    display: block;
+    margin: 0 auto;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: repeat(2, 50vh);
+    height: 100vh;
+}
+
+
+.grid-item {
+    border: 1px solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    color: white;
+}
+
+.green-flash {
+    background-color: green !important;
+    transition: background-color 1s;
+}
+
+.gamescreen header {
+    flex: 20%;
+    background-color: rgb(71, 92, 255);
+}
+
+
+.gamescreen footer {
+    flex: 20%;
+    background-color: rgb(165, 103, 27);
+}
+
+
+.disable-graident {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+.correct {
+    background-color: rgb(17, 129, 17) !important;
+}

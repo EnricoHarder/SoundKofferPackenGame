@@ -37,7 +37,7 @@ function generateRandomColor() {
 }
 
 // Farben den Grid-Elementen zuweisen
-let gridItems = document.querySelectorAll('.grid-item');
+const gridItems = document.querySelectorAll('.grid-item');
 let i = 0;
 gridItems.forEach(function (item) {
     item.style.background = generateRandomColor();
@@ -121,7 +121,6 @@ function showReihenfolge(roundNr) {
     
 
     function clickNext() {
-        gridItems[slicedFruits[clickIndex]].click();
         userClickedOrder.push(slicedFruits[clickIndex]);
         clickIndex++;
         if (clickIndex < roundNr) {
