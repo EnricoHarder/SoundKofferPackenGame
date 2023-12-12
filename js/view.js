@@ -52,72 +52,79 @@ function startGame() {
     console.log('Das Spiel hat begonnen!');
     // starte bei Runde 1 beim ersten Start
     setCurrentRoundNr(1);
+    console.log('Runden gesetzt');
     // 2 Spieler Modus ohne CPU auslesen
     getTwoPlayersState();
     // generiere für das Spiel eine zufällige Playlist
     generatePlaylists(anzahlMaximalerRunden);
     // show game and hide start screen
     giveGridsColors();
+    console.log('showStartingDisplay gestartet!');
     // display Game and make Startscreen unvisible
-    switchToGameScreen();
+    // switchToGameScreen();
     // starte Spiel je nach Optionen mit oder ohne Computer
     if (onlyHumans) {
         showStartingDisplay();
         // start ShowClickPath
-        start2Game();
+
     } else {
         showStartingDisplay();
         // start ShowClickPath
-        start2Game();
-    }
+  
+    };
 
-}
-
-let countdownInterval = setInterval(updateCountdown, 1000);
-function updateCountdown() {
-    $.get("/countdown", function (data) {
-        $("#countdown").text(data.countdown);
-    });
-
-    setInterval(updateCountdown, 1000);
 }
 
 function start2Game() {
-    console.log('Das Spiel hat begonnen!');
+    console.log('start2Game aufegrufen!');
     // Hier dein Spielstart-Code hinzufügen
 }
 
 
 function showStartingDisplay() {
-    document.getElementById('start-button').addEventListener('click', function () {
-        console.log('Das Spiel hat begonnen!');
-        var overlay = document.getElementById('countdownOverlay');
-        var cancelButton = document.getElementById('cancelButton');
-        var countdownText = document.getElementById('countdownText');
+    console.log('showStartingDisplay aufgerufen!');
 
-        overlay.style.display = 'flex';
+    document.getElementById("countdownOverlay").style.display = "block";
 
-        var countdown = 4;
+    function startCountdown(countdown_date) {
+        // Get the current time
+        let now = new Date().getTime();
+        
+        // Find the distance between now and the countdown date
+        let distance = countdown_date - now;
+        
+        // Calculate the remaining time
+        let days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        let hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        let seconds = Math.floor((distance % (1000 * 60)) / 1000);
+        
+        // Display the remaining time
+        document.getElementById("countdownElement").innerHTML = days + "d " + hours + "h "
+            + minutes + "m " + seconds + "s ";
+        
+        // Update the countdown every second
+        if (distance > 0) {
+            setTimeout(function() {
+                startCountdown(countdown_date);
+                console.log('Countdown gestaret!');
+            }, 1000);
+        }
+    }
 
-        var countdownTimer = setInterval(function () {
-            countdown--;
-            countdownText.textContent = 'Das Spiel wird gestartet in ' + countdown;
 
-            if (countdown === 0) {
-                clearInterval(countdownTimer);
-                overlay.style.display = 'none';
-                // hier den Spielstart durchführen
-            }
-        }, 1000);
+    let countdown_date = new Date("Apr 24, 2022 15:37:25").getTime();
+    startCountdown(countdown_date);
 
-        cancelButton.addEventListener('click', function () {
-            clearInterval(countdownTimer);
-            overlay.style.display = 'none';
-            // hier den Wechsel zum Startbildschirm durchführen
-        });
+    document.getElementById("cancelbutton").addEventListener("click", function() {
+        document.getElementById("countdownElement").innerHTML = "0d 0h 0m 0s";
     });
 
+    setTimeout(toggleOverlay, 4000);
+
 }
+
+
 
 function startHumanGame(currentRoundNr) {
     console.log("TTEST");
@@ -136,6 +143,7 @@ function handleTwoPlayersCheckbox() {
 
 // Funktion zum Auslesen der Startoptionen
 function getTwoPlayersState() {
+    console.log("checkbox_two_players aufgerufen");
     checkbox = document.getElementById('checkbox_two_players');
     return checkbox.checked;
 }
@@ -145,10 +153,14 @@ function switchToGameScreen() {
     gameScreen.style.display = "block";
     startScreen.style.display = "none";
     highscoreScreen.style.display = "none";
-    gameEndResult.style.display = "none"
+    gameEndResult.style.display = "none";
+    console.log('Items colored');
 }
 
 function giveGridsColors() {
+    
+    console.log('giveGridsColors gestartet!');
+
     gridItems.forEach(function (item) {
         // gib jedem Panel/Grid eine Farbe aus dem Array
         item.style.background = generateRandomColor();
