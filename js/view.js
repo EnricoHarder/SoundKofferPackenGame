@@ -20,7 +20,7 @@ const gridItems = document.querySelectorAll('.grid-item');
 let playerPosition = 0;
 let currentRoundNr = 1;
 let currentPostionOfRound = 1;
-let onlyHumans = true;
+let onlyHumans = false;
 // wenn true, ist die APp im Show-Modus und der User schaut nur zu
 let showMode = false;
 let countdownToStart = 4;
@@ -59,7 +59,7 @@ function startGame() {
     setCurrentRoundNr(1);
     console.log('Runden gesetzt');
     // 2 Spieler Modus ohne CPU auslesen
-    getTwoPlayersState();
+    onlyHumans = getTwoPlayersState();
     // generiere für das Spiel eine zufällige Playlist
     generatePlaylists(anzahlMaximalerRunden);
     // show game and hide start screen
@@ -101,22 +101,22 @@ function showStartingDisplay() {
 
 function startCountdown(duration) {
     let timer = duration, minutes, seconds;
-   
+
     countdown = setInterval(function () {
-       minutes = parseInt(timer / 60, 10);
-       seconds = parseInt(timer % 60, 10);
-   
-       minutes = minutes < 10 ? "0" + minutes : minutes;
-       seconds = seconds < 10 ? "0" + seconds : seconds;
-   
-       countdownElement.textContent = minutes + ":" + seconds;
-   
-       if (--timer < 0) {
-         clearInterval(countdown);
-         // hier können Sie Code hinzufügen, der ausgeführt wird, wenn der Countdown abgelaufen ist
-       }
+        minutes = parseInt(timer / 60, 10);
+        seconds = parseInt(timer % 60, 10);
+
+        minutes = minutes < 10 ? "0" + minutes : minutes;
+        seconds = seconds < 10 ? "0" + seconds : seconds;
+
+        countdownElement.textContent = minutes + ":" + seconds;
+
+        if (--timer < 0) {
+            clearInterval(countdown);
+            // hier können Sie Code hinzufügen, der ausgeführt wird, wenn der Countdown abgelaufen ist
+        }
     }, 1000);
-   }
+}
 
 
 function stopCountdown() {
@@ -137,7 +137,7 @@ function startHumanGame(currentRoundNr) {
 }
 
 function handleTwoPlayersCheckbox() {
-    const isTwoPlayers = getTwoPlayersState();
+    isTwoPlayers = getTwoPlayersState();
     if (isTwoPlayers) {
         onlyHumans = true;
     } else {
@@ -147,8 +147,9 @@ function handleTwoPlayersCheckbox() {
 
 // Funktion zum Auslesen der Startoptionen
 function getTwoPlayersState() {
-    console.log("checkbox_two_players aufgerufen");
-    checkbox = document.getElementById('checkbox_two_players');
+    console.log("getTwoPlayersState aufgerufen");
+    let checkbox = document.getElementById('checkbox_two_players');
+    console.log('checkbox für 2 spieler ist gesetzt auf ' + checkbox.checked);
     return checkbox.checked;
 }
 
