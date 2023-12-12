@@ -20,6 +20,8 @@ let currentPostionOfRound = 1;
 let onlyHumans = true;
 // wenn true, ist die APp im Show-Modus und der User schaut nur zu
 let showMode = false;
+let countdownToStart = 4;
+currentCountdownNumber = 0;
 
 
 let soundPlaylist = []; // Gesamte Playlist
@@ -66,11 +68,12 @@ function startGame() {
     if (onlyHumans) {
         showStartingDisplay();
         // start ShowClickPath
+        start2Game();
 
     } else {
         showStartingDisplay();
         // start ShowClickPath
-  
+
     };
 
 }
@@ -78,52 +81,31 @@ function startGame() {
 function start2Game() {
     console.log('start2Game aufegrufen!');
     // Hier dein Spielstart-Code hinzufügen
+    startCountdown();
 }
 
 
 function showStartingDisplay() {
     console.log('showStartingDisplay aufgerufen!');
-
     document.getElementById("countdownOverlay").style.display = "block";
-
-    function startCountdown(countdown_date) {
-        // Get the current time
-        let now = new Date().getTime();
-        
-        // Find the distance between now and the countdown date
-        let distance = countdown_date - now;
-        
-        // Calculate the remaining time
-        let days = Math.floor(distance / (1000 * 60 * 60 * 24));
-        let hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-        let seconds = Math.floor((distance % (1000 * 60)) / 1000);
-        
-        // Display the remaining time
-        document.getElementById("countdownElement").innerHTML = days + "d " + hours + "h "
-            + minutes + "m " + seconds + "s ";
-        
-        // Update the countdown every second
-        if (distance > 0) {
-            setTimeout(function() {
-                startCountdown(countdown_date);
-                console.log('Countdown gestaret!');
-            }, 1000);
-        }
-    }
-
-
-    let countdown_date = new Date("Apr 24, 2022 15:37:25").getTime();
-    startCountdown(countdown_date);
-
-    document.getElementById("cancelbutton").addEventListener("click", function() {
-        document.getElementById("countdownElement").innerHTML = "0d 0h 0m 0s";
-    });
-
-    setTimeout(toggleOverlay, 4000);
-
 }
 
+function startCountdown() {
+    // Update the countdown every second
+    if (currentCountdownNumber < countdownToStart) {
+        setTimeout(function () {
+            currentCountdownNumber++;
+            console.log('Countdown gestaret!');
+        }, 1000);
+    }
+
+    setTimeout(toggleOverlay, 4000);
+}
+
+
+document.getElementById("cancelButton").addEventListener("click", function () {
+    document.getElementById("countdownElement").innerHTML = "STOPPED";
+});
 
 
 function startHumanGame(currentRoundNr) {
@@ -158,7 +140,7 @@ function switchToGameScreen() {
 }
 
 function giveGridsColors() {
-    
+
     console.log('giveGridsColors gestartet!');
 
     gridItems.forEach(function (item) {
