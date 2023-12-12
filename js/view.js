@@ -94,7 +94,7 @@ function start2Game() {
 
 
 function showStartingDisplay() {
-    console.log('OVERLAY ANZEIGEN!');
+    console.log('showStartingDisplay: overlay ANZEIGEN!');
     // start ShowClickPath
     document.getElementById("overlay").style.display = "block";
 }
@@ -109,15 +109,21 @@ function startCountdown(duration) {
         minutes = minutes < 10 ? "0" + minutes : minutes;
         seconds = seconds < 10 ? "0" + seconds : seconds;
 
-        countdownElement.textContent = minutes + ":" + seconds;
+        document.getElementById("countdownElement").textContent = minutes + ":" + seconds;
 
         if (--timer < 0) {
             clearInterval(countdown);
             // hier können Sie Code hinzufügen, der ausgeführt wird, wenn der Countdown abgelaufen ist
+            startGameFor2HumanPlayer();
         }
     }, 1000);
+
 }
 
+function startGameFor2HumanPlayer() {
+    // Overlay mit Countdown ausblenden
+    document.getElementById("overlay").style.display = "none";
+}
 
 function stopCountdown() {
     clearTimeout(timerId);
