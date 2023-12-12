@@ -118,7 +118,7 @@ function startCountdown(duration) {
         }
     }, 1000);
 
-}
+} 
 
 function startGameFor2HumanPlayer() {
     // Overlay mit Countdown ausblenden
