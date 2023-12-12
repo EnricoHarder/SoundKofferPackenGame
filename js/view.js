@@ -71,10 +71,11 @@ function startGame() {
     if (onlyHumans) {
         console.log('showStartingDisplay gestartet for humans!');
         showStartingDisplay();
-        // start ShowClickPath
-         start2Game();
-         // anzeigen
-         console.log("Add Listener for cancel button");     console.log("Das Spiel wurde gestartet");
+
+
+        start2Game();
+        // anzeigen
+        console.log("Das Spiel wurde gestartet");
 
     } else {
         console.log('showStartingDisplay gestartet for general!');
@@ -88,45 +89,34 @@ function startGame() {
 function start2Game() {
     console.log('start2Game aufegrufen!');
     // Hier dein Spielstart-Code hinzufügen
-    startCountdown();
+    startCountdown(countdownToStart);
 }
 
 
 function showStartingDisplay() {
-    console.log('showStartingDisplay aufgerufen!');
-    overlay.style.display = "block";
+    console.log('OVERLAY ANZEIGEN!');
+    // start ShowClickPath
+    document.getElementById("overlay").style.display = "block";
 }
 
-function startCountdown() {
-
-    let timerId = setTimeout(countdown, 1000);
-
-    console.log('countdown STARTEN aufgerufen!');
-    startButton.addEventListener('click', function () {
-        overlay.style.display = 'block';
-
-        let minutes = 0;
-        let seconds = 0;
-
-        interval = setInterval(function () {
-            if (seconds == 0) {
-                if (minutes == 0) {
-                    clearInterval(interval);
-                } else {
-                    minutes--;
-                    seconds = 60;
-                }
-            } else {
-                seconds--;
-            }
-
-            countdown.textContent = minutes.toString().padStart(2, '0') + ':' + seconds.toString().padStart(2, '0');
-        }, 1000);
-    })
-    console.log("Add Listener for cancel button 2");
-    
-    console.log('countdowm FERTIG aufgerufen!');
-}
+function startCountdown(duration) {
+    let timer = duration, minutes, seconds;
+   
+    countdown = setInterval(function () {
+       minutes = parseInt(timer / 60, 10);
+       seconds = parseInt(timer % 60, 10);
+   
+       minutes = minutes < 10 ? "0" + minutes : minutes;
+       seconds = seconds < 10 ? "0" + seconds : seconds;
+   
+       countdownElement.textContent = minutes + ":" + seconds;
+   
+       if (--timer < 0) {
+         clearInterval(countdown);
+         // hier können Sie Code hinzufügen, der ausgeführt wird, wenn der Countdown abgelaufen ist
+       }
+    }, 1000);
+   }
 
 
 function stopCountdown() {
