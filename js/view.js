@@ -97,10 +97,14 @@ function showStartingDisplay() {
     console.log('showStartingDisplay: overlay ANZEIGEN!');
     // start ShowClickPath
     document.getElementById("overlay").style.display = "block";
+    document.getElementById("main").style.display = "none";
+    document.getElementById('cancelbutton').addEventListener('click', stopCountdown);
 }
 
 function startCountdown(duration) {
     let timer = duration, minutes, seconds;
+
+
 
     countdown = setInterval(function () {
         minutes = parseInt(timer / 60, 10);
@@ -114,11 +118,13 @@ function startCountdown(duration) {
         if (--timer < 0) {
             clearInterval(countdown);
             // hier können Sie Code hinzufügen, der ausgeführt wird, wenn der Countdown abgelaufen ist
+            // hier können Sie Code hinzufügen, der ausgeführt wird, wenn der Countdown abgelaufen ist
+            document.getElementById("main").style.display = "block";
             startGameFor2HumanPlayer();
         }
     }, 1000);
 
-} 
+}
 
 function startGameFor2HumanPlayer() {
     // Overlay mit Countdown ausblenden
@@ -126,12 +132,10 @@ function startGameFor2HumanPlayer() {
 }
 
 function stopCountdown() {
-    clearTimeout(timerId);
-}
-
-function showOverlay() {
-    // Anzeigen des Overlays
-    stopCountdown();
+    clearInterval(countdown);
+    // hier können Sie Code hinzufügen, der ausgeführt wird, wenn der Countdown abgelaufen ist
+    document.getElementById("overlay").style.display = "none";
+    document.getElementById("main").style.display = "block";
 }
 
 
