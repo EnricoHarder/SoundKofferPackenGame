@@ -1,8 +1,8 @@
 // Alle notwendigen Bereiche einlesen und zuweisen
 let gameScreen = document.getElementById("gameScreen");
 let startScreen = document.getElementById("startScreen");
-let gameInfo = document.getElementById("gameInfo");
-let gameResult = document.getElementById("gameResult");
+// let gameInfo = document.getElementById("gameInfo");
+// let  gameResult = document.getElementById("gameResult");
 let highscoreScreen = document.getElementById("highscoreScreen");
 let currentState = document.getElementById("status");
 let anzahlMaximalerRunden = document.getElementById("anzahlMaxRunden");
@@ -25,12 +25,13 @@ let currentPostionOfRound = 1;
 let onlyHumans = false;
 // wenn true, ist die APp im Show-Modus und der User schaut nur zu
 let showMode = false;
-let countdownToStart = 3;
+let countdownToStart = 1;
 let currentCountdownNumber = 0;
 // aktueller Spieler
 let currentPlayer = 1;
 let showNextStep = false;
 let isTwoPlayers = false;
+let blinkmode = false;
 
 let sound1;
 let sound2;
@@ -64,13 +65,18 @@ let sounds = [new Audio('/sounds/butterbirne.mp3'), new Audio('/sounds/alarm.mp3
 // lies die Checkbox aus für Veränderungen
 const checkbox = document.getElementById('checkbox_two_players');
 checkbox.addEventListener('change', handleTwoPlayersCheckbox);
+let namePlayer1 = document.querySelector("#name1").value;
+let namePlayer2 = document.querySelector("#name2").value;
 
 // Methode, die aufgerufen wird, sofern der Startbutton getätigt wird
 function startGame() {
     console.log('Das Spiel hat begonnen!');
     // starte bei Runde 1 beim ersten Start
     setCurrentRoundNr(currentRoundNr);
-    
+
+
+
+
     // 2 Spieler Modus ohne CPU auslesen
     onlyHumans = getTwoPlayersState();
     // generiere für das Spiel eine zufällige Playlist
@@ -106,9 +112,9 @@ function start2Game() {
 
 
 function showOverlay() {
-    console.log('showOverlay: overlay ANZEIGEN!');
+    console.log('showOverlay: overlay ANZEIGEN!' + namePlayer1);
     // start ShowClickPath
-    document.getElementById("overlay").style.display = "block";
+    overlay.style.display = "block";
     // add STOP-EVENT zum OVERLAY
     cancelbutton.addEventListener('click', stopCountdown);
     // main so lange ausblenden
@@ -153,11 +159,23 @@ function stopCountdown() {
 
 // Wird IMMER AUSGEFÜHRT BEI EINEM KLICK AUF EIN SOUND
 function handleClick(event) {
+    console.log("handleClick wurde aufgerufen");
+    if (currentPlayer == 1) {
+        document.querySelector("#gameScreen > header").innerText = namePlayer1;
+        document.querySelector("#gameScreen > header").style.backgroundColor = "#FFA500"; // Goldfarbe
+
+    } else {
+        document.querySelector("#gameScreen > header").innerText = namePlayer2;
+        document.querySelector("#gameScreen > header").style.backgroundColor = "white"; // Goldfarbe
+
+    }
     let element = event.target;
 
     checkInput(element);
     // Hier kann man zusätzliche Bedingungen oder Validierungen hinzufügen
     console.log("Grid Element clicked: " + element.textContent);
+
+
 }
 
 
@@ -172,6 +190,7 @@ function startFirstRound() {
     // HIER MUSS NUN DIE ERSTE RUNDE GESTARTET WERDEN MIT SPIELER 1
     console.log("WAIT FOR RECORD INPUT");
 
+
 }
 
 function addElement(element) {
@@ -183,6 +202,8 @@ function addElement(element) {
 
 function checkInput(event) {
 
+    // showBlinkingTextForWithThisTextForThisTime();
+
     let elementText = event.textContent;
 
     console.log("checkInput: " + elementText + " and booleab showNextStep = " + showNextStep + " WITH CURRENT PLAYLIST " + currentRoundPlaylist);
@@ -192,6 +213,7 @@ function checkInput(event) {
         console.log("START GAME ########## NO LIST FOUND OR IS EMPTRY ####### " + currentRoundPlaylist.length);
         // add element to current list
         playerAddInput(elementText);
+        endOfRound();
 
     }
     else if (currentRoundPlaylist.length < currentPostionOfRound) {
@@ -214,8 +236,48 @@ function checkInput(event) {
 
 function endOfRound() {
     showNextStep = false;
-    console.log("########## ENDE ##########" )
+    console.log("########## ENDE FÜR SPIELER 1 ##########")
+    player2StartReplayAndAddNewItem();
 }
+
+function player2StartReplayAndAddNewItem() {
+    console.log("SPIELER 2 STARTET #");
+    currentPlayer = 2;
+    currentPostionOfRound = 0;
+    showNextStep = true;
+
+    document.querySelector("#gameScreen > header").innerText = namePlayer2 + "STARTET JETZT!";
+    document.querySelector("#gameScreen > header").style.backgroundColor = "white"; // Goldf
+
+    startReplay();
+}
+
+function startReplay() {
+    console.log("SPIELER 2 STARTET REPLAYYYYYYYYYYYYYYYYYYY#");
+    buildRoundDisplay();
+}
+
+function buildRoundDisplay() {
+
+    currentState.innerText = "";
+    // blinkmode = true;
+    rundennummer.innerHTML = currentRoundNr;
+    currentState.innerText = "SPIELER NR: " + currentPlayer + " IST DRAN!";
+}
+
+// let intervalId=setInterval(function () {
+//     blinkText(currentState.innerText);
+// }, 2000);
+
+
+// Dies ist der neue Code
+// function stopBlinking() {
+//     blinkmode = false;
+//     clearInterval(intervalId);
+
+//     // Entferne den Event-Listener für das click-Event des Elements mit der ID "grid"
+//     document.getElementById("grid").removeEventListener("click", stopBlinking);
+// }
 
 function playerAddInput(indexx) {
 
@@ -259,11 +321,14 @@ function switchToGameScreen() {
     console.log('SWITCH to GAMESCREEN');
     overlay.style.display = "none";
     main.style.display = "block";
-    gameResult.innerHTML = "";
+    // gameResult.innerHTML = "";
     gameScreen.style.display = "block";
     startScreen.style.display = "none";
     highscoreScreen.style.display = "none";
     gameEndResult.style.display = "none";
+
+    document.querySelector("#gameScreen > header").innerText = namePlayer1 + " BEGINNT";
+    document.querySelector("#gameScreen > header").style.backgroundColor = "#FFA500"; // Goldf
 
 }
 
@@ -291,6 +356,7 @@ function initGrids() {
     sound2.addEventListener("click", handleClick);
     sound3.addEventListener("click", handleClick);
     sound4.addEventListener("click", handleClick);
+
 }
 
 // Generiere die Playlist für max. Rundenanzahl
@@ -500,17 +566,14 @@ function audioPlayed() {
     return;
 }
 
-function blinkText() {
-    text = "BITTE WARTEN AUF COMPUTER! ";
-    if (showRound) {
-        document.getElementById("blinker").innerHTML = "<span class='blink'>" + text + "</span>";
-    } else {
-        document.getElementById("blinker").innerHTML = "<span>" + text + "</span>";
-        let element = document.getElementById("hut");
+function blinkText(blinkText) {
 
-        if (element) {
-            animateScrollToElement(element);
-        }
+
+    text = "BITTE WARTEN AUF COMPUTER! ";
+    if (blinkmode) {
+        currentState.innerHTML = "<span class='blink'>" + blinkText + "</span>";
+    } else {
+        currentState.innerHTML = "<span>" + text + "</span>";
     }
-    showRound = !showRound; // toggle the value of blink
+    blinkmode = !blinkmode; // toggle the value of blink
 }
