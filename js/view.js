@@ -51,6 +51,9 @@ const availableColorList = ["red", "blue", "yellow", "black", "grey", "white"];
 let audio;
 let sounds = [new Audio('/sounds/butterbirne.mp3'), new Audio('/sounds/alarm.mp3'), new Audio('/sounds/sprachfehler.mp3'), new Audio('/sounds/watwerbistdudenn.mp3')];
 
+// lies die Checkbox aus für Veränderungen
+const checkbox = document.getElementById('checkbox_two_players');
+checkbox.addEventListener('change', handleTwoPlayersCheckbox);
 
 // Methode, die aufgerufen wird, sofern der Startbutton getätigt wird
 function startGame() {
@@ -79,8 +82,7 @@ function startGame() {
 
     } else {
         console.log('showStartingDisplay gestartet for general!');
-        showStartingDisplay();
-        // start ShowClickPath
+ 
 
     };
 
@@ -120,6 +122,7 @@ function startCountdown(duration) {
             // hier können Sie Code hinzufügen, der ausgeführt wird, wenn der Countdown abgelaufen ist
             // hier können Sie Code hinzufügen, der ausgeführt wird, wenn der Countdown abgelaufen ist
             document.getElementById("main").style.display = "block";
+            // Das Spiel Startet mit dem Spiel für 2 Player ohne CPU
             startGameFor2HumanPlayer();
         }
     }, 1000);
@@ -129,6 +132,7 @@ function startCountdown(duration) {
 function startGameFor2HumanPlayer() {
     // Overlay mit Countdown ausblenden
     document.getElementById("overlay").style.display = "none";
+    startHumanGame();
 }
 
 function stopCountdown() {
