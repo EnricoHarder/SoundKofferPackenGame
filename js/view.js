@@ -12,6 +12,7 @@ let startButton = document.getElementById('start-button');
 let overlay = document.getElementById('overlay');
 let countdown = document.getElementById('countdownElement');
 let main = document.getElementById("main"); // Hauptinhalt
+let cancelbutton = document.getElementById('cancelbutton');
 // Start Timer
 let interval;
 // Liste der Board-Komponenten
@@ -24,11 +25,17 @@ let currentPostionOfRound = 1;
 let onlyHumans = false;
 // wenn true, ist die APp im Show-Modus und der User schaut nur zu
 let showMode = false;
-let countdownToStart = 4;
+let countdownToStart = 3;
 let currentCountdownNumber = 0;
 // aktueller Spieler
 let currentPlayer = 1;
+let showNextStep = false;
+let isTwoPlayers = false;
 
+let sound1;
+let sound2;
+let sound3;
+let sound4;
 
 let soundPlaylist = []; // Gesamte Playlist
 let currentRoundPlaylist = []; // Playlist für die aktuelle Runde
@@ -62,29 +69,31 @@ checkbox.addEventListener('change', handleTwoPlayersCheckbox);
 function startGame() {
     console.log('Das Spiel hat begonnen!');
     // starte bei Runde 1 beim ersten Start
-    setCurrentRoundNr(1);
-    console.log('Runden gesetzt');
+    setCurrentRoundNr(currentRoundNr);
+    
     // 2 Spieler Modus ohne CPU auslesen
     onlyHumans = getTwoPlayersState();
     // generiere für das Spiel eine zufällige Playlist
     generatePlaylists(anzahlMaximalerRunden);
     // show game and hide start screen
-    giveGridsColors();
+    initGrids();
 
     // display Game and make Startscreen unvisible
     // switchToGameScreen();
     // starte Spiel je nach Optionen mit oder ohne Computer
     if (onlyHumans) {
-        console.log('showStartingDisplay gestartet for humans!');
-        showStartingDisplay();
 
-
+        console.log('showOverlay gestartet for humans!');
+        // Zeige Overlay
+        showOverlay();
+        // starte Start-Countdown und Abbruch-Möglichkeit
+        startCountdownFor2Player(countdownToStart);
+        // starte das Spiel
         start2Game();
-        // anzeigen
         console.log("Das Spiel wurde gestartet");
 
     } else {
-        console.log('showStartingDisplay gestartet for general!');
+        console.log('showOverlay gestartet for general!');
 
 
     };
@@ -93,24 +102,21 @@ function startGame() {
 
 function start2Game() {
     console.log('start2Game aufegrufen!');
-    // Hier dein Spielstart-Code hinzufügen
-    startCountdownFor2Player(countdownToStart);
 }
 
 
-function showStartingDisplay() {
-    console.log('showStartingDisplay: overlay ANZEIGEN!');
+function showOverlay() {
+    console.log('showOverlay: overlay ANZEIGEN!');
     // start ShowClickPath
     document.getElementById("overlay").style.display = "block";
+    // add STOP-EVENT zum OVERLAY
+    cancelbutton.addEventListener('click', stopCountdown);
+    // main so lange ausblenden
     main.style.display = "none";
-    document.getElementById('cancelbutton').addEventListener('click', stopCountdown);
 }
 
 function startCountdownFor2Player(duration) {
     let timer = duration, minutes, seconds;
-
-
-
     countdown = setInterval(function () {
         minutes = parseInt(timer / 60, 10);
         seconds = parseInt(timer % 60, 10);
@@ -124,7 +130,7 @@ function startCountdownFor2Player(duration) {
             clearInterval(countdown);
             // hier können Sie Code hinzufügen, der ausgeführt wird, wenn der Countdown abgelaufen ist
             // Overlay mit Countdown ausblenden
-            document.getElementById("overlay").style.display = "none";
+            // document.getElementById("overlay").style.display = "none";
             // hier können Sie Code hinzufügen, der ausgeführt wird, wenn der Countdown abgelaufen ist
 
             startHumanGame();
@@ -135,16 +141,101 @@ function startCountdownFor2Player(duration) {
 
 function stopCountdown() {
     clearInterval(countdown);
-    // hier können Sie Code hinzufügen, der ausgeführt wird, wenn der Countdown abgelaufen ist
+    // countdown ausblenden, also das overlay und main einblenden
     document.getElementById("overlay").style.display = "none";
     main.style.display = "block";
 }
 
 
 
+
+
+
+// Wird IMMER AUSGEFÜHRT BEI EINEM KLICK AUF EIN SOUND
+function handleClick(event) {
+    let element = event.target;
+
+    checkInput(element);
+    // Hier kann man zusätzliche Bedingungen oder Validierungen hinzufügen
+    console.log("Grid Element clicked: " + element.textContent);
+}
+
+
 function startHumanGame(currentRoundNr) {
     console.log("startHumanGame was started");
-    switchToGameScreen();    
+    switchToGameScreen();
+    startFirstRound();
+}
+
+function startFirstRound() {
+
+    // HIER MUSS NUN DIE ERSTE RUNDE GESTARTET WERDEN MIT SPIELER 1
+    console.log("WAIT FOR RECORD INPUT");
+
+}
+
+function addElement(element) {
+    let arrayTmp = currentRoundPlaylist;
+    arrayTmp.push(element);
+    currentRoundPlaylist = arrayTmp;
+    console.log("Element added: " + element + " NEUE LÄNGE: " + currentRoundPlaylist.length);
+}
+
+function checkInput(event) {
+
+    let elementText = event.textContent;
+
+    console.log("checkInput: " + elementText + " and booleab showNextStep = " + showNextStep + " WITH CURRENT PLAYLIST " + currentRoundPlaylist);
+
+    if (currentRoundPlaylist.length == 0) {
+        // SPIEL HAT GERADE BEGONNEN MIT LIST=0
+        console.log("START GAME ########## NO LIST FOUND OR IS EMPTRY ####### " + currentRoundPlaylist.length);
+        // add element to current list
+        playerAddInput(elementText);
+
+    }
+    else if (currentRoundPlaylist.length < currentPostionOfRound) {
+        playerAddInput(elementText);
+    }
+    else if (currentRoundPlaylist.length == currentPostionOfRound) {
+
+        console.log("END OF ITEMS IN THIS ROUND, NOW ADD CLICK zu " + currentRoundPlaylist.length + " IN ROUND " + currentPostionOfRound);
+        endOfRound();
+
+    } else if (!showNextStep) {
+
+        console.log("RUNDE BEENDET MIR DER PL: " + currentRoundPlaylist + " IN ROUND " + currentPostionOfRound);
+
+    }
+
+    console.log("NOW ITS: " + currentRoundPlaylist + " AND YOUR " + currentPostionOfRound);
+
+}
+
+function endOfRound() {
+    showNextStep = false;
+    console.log("########## ENDE ##########" )
+}
+
+function playerAddInput(indexx) {
+
+    console.log("playerAddInput number " + indexx + " was started");
+
+    addElement(indexx);
+    console.log("playerAddInput was ended with list: " + currentRoundPlaylist);
+
+}
+
+function playerAddNewItem(indexx) {
+
+}
+
+function startInput(indexx) {
+    //console.log("START INPUT WITH NUMBER " + indexx);
+    let number = indexx;
+    console.log("START INPUT WITH NUMBER " + number);
+    showNextStep = false;
+    return number;
 }
 
 function handleTwoPlayersCheckbox() {
@@ -165,24 +256,41 @@ function getTwoPlayersState() {
 }
 
 function switchToGameScreen() {
+    console.log('SWITCH to GAMESCREEN');
+    overlay.style.display = "none";
     main.style.display = "block";
     gameResult.innerHTML = "";
     gameScreen.style.display = "block";
     startScreen.style.display = "none";
     highscoreScreen.style.display = "none";
     gameEndResult.style.display = "none";
-    console.log('Items colored');
+
 }
 
 
-function giveGridsColors() {
+function initGrids() {
 
-    console.log('giveGridsColors gestartet!');
+    console.log('INITIALISIERE GRIDS!');
 
-    gridItems.forEach(function (item) {
-        // gib jedem Panel/Grid eine Farbe aus dem Array
-        item.style.background = generateRandomColor();
-    });
+
+    console.log('WEISE JEDEM SOUND EIN GRID ZU!');
+    sound1 = gridItems[0];
+    sound2 = gridItems[1];
+    sound3 = gridItems[2];
+    sound4 = gridItems[3];
+
+    console.log("ADD RANDOM BACKGROUND FÜR JEDES GRID");
+    sound1.style.background = generateRandomColor();
+    sound2.style.background = generateRandomColor();
+    sound3.style.background = generateRandomColor();
+    sound4.style.background = generateRandomColor();
+
+    // ADD CLICK EVENT TO EVERY SOUND
+    console.log("ADD CLICK HANDLECLICK FÜR GRIDS");
+    sound1.addEventListener("click", handleClick);
+    sound2.addEventListener("click", handleClick);
+    sound3.addEventListener("click", handleClick);
+    sound4.addEventListener("click", handleClick);
 }
 
 // Generiere die Playlist für max. Rundenanzahl
@@ -292,6 +400,7 @@ function flashWrong(indexOfCurrenClickedtGrid) {
 
 function setCurrentRoundNr(aktuelleRunde) {
     rundennummer.innerHTML = aktuelleRunde;
+    console.log('aktuelle Rundennummer gesetzt auf ' + aktuelleRunde);
 }
 
 
