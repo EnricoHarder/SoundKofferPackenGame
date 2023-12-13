@@ -11,6 +11,7 @@ let rundennummer = document.getElementById("currentRoundNumber");
 let startButton = document.getElementById('start-button');
 let overlay = document.getElementById('overlay');
 let countdown = document.getElementById('countdownElement');
+let main = document.getElementById("main"); // Hauptinhalt
 // Start Timer
 let interval;
 // Liste der Board-Komponenten
@@ -25,6 +26,8 @@ let onlyHumans = false;
 let showMode = false;
 let countdownToStart = 4;
 let currentCountdownNumber = 0;
+// aktueller Spieler
+let currentPlayer = 1;
 
 
 let soundPlaylist = []; // Gesamte Playlist
@@ -82,7 +85,7 @@ function startGame() {
 
     } else {
         console.log('showStartingDisplay gestartet for general!');
- 
+
 
     };
 
@@ -91,7 +94,7 @@ function startGame() {
 function start2Game() {
     console.log('start2Game aufegrufen!');
     // Hier dein Spielstart-Code hinzufügen
-    startCountdown(countdownToStart);
+    startCountdownFor2Player(countdownToStart);
 }
 
 
@@ -99,11 +102,11 @@ function showStartingDisplay() {
     console.log('showStartingDisplay: overlay ANZEIGEN!');
     // start ShowClickPath
     document.getElementById("overlay").style.display = "block";
-    document.getElementById("main").style.display = "none";
+    main.style.display = "none";
     document.getElementById('cancelbutton').addEventListener('click', stopCountdown);
 }
 
-function startCountdown(duration) {
+function startCountdownFor2Player(duration) {
     let timer = duration, minutes, seconds;
 
 
@@ -120,34 +123,28 @@ function startCountdown(duration) {
         if (--timer < 0) {
             clearInterval(countdown);
             // hier können Sie Code hinzufügen, der ausgeführt wird, wenn der Countdown abgelaufen ist
+            // Overlay mit Countdown ausblenden
+            document.getElementById("overlay").style.display = "none";
             // hier können Sie Code hinzufügen, der ausgeführt wird, wenn der Countdown abgelaufen ist
-            document.getElementById("main").style.display = "block";
-            // Das Spiel Startet mit dem Spiel für 2 Player ohne CPU
-            startGameFor2HumanPlayer();
+
+            startHumanGame();
         }
     }, 1000);
 
-}
-
-function startGameFor2HumanPlayer() {
-    // Overlay mit Countdown ausblenden
-    document.getElementById("overlay").style.display = "none";
-    startHumanGame();
 }
 
 function stopCountdown() {
     clearInterval(countdown);
     // hier können Sie Code hinzufügen, der ausgeführt wird, wenn der Countdown abgelaufen ist
     document.getElementById("overlay").style.display = "none";
-    document.getElementById("main").style.display = "block";
+    main.style.display = "block";
 }
 
 
 
 function startHumanGame(currentRoundNr) {
-    console.log("TTEST");
-    const checkbox = document.getElementById('checkbox_two_players');
-    checkbox.addEventListener('change', handleTwoPlayersCheckbox);
+    console.log("startHumanGame was started");
+    switchToGameScreen();    
 }
 
 function handleTwoPlayersCheckbox() {
@@ -168,6 +165,7 @@ function getTwoPlayersState() {
 }
 
 function switchToGameScreen() {
+    main.style.display = "block";
     gameResult.innerHTML = "";
     gameScreen.style.display = "block";
     startScreen.style.display = "none";
@@ -175,6 +173,7 @@ function switchToGameScreen() {
     gameEndResult.style.display = "none";
     console.log('Items colored');
 }
+
 
 function giveGridsColors() {
 
