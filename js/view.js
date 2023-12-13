@@ -5,7 +5,7 @@ let startScreen = document.getElementById("startScreen");
 // let  gameResult = document.getElementById("gameResult");
 let highscoreScreen = document.getElementById("highscoreScreen");
 let currentState = document.getElementById("status");
-let anzahlMaximalerRunden = document.getElementById("anzahlMaxRunden");
+let anzahlMaximalerRunden = document.getElementById("anzahlMaxRunden").value;
 let rundennummer = document.getElementById("currentRoundNumber");
 // Countdown auf der Spielt-Start-Lade-Seite
 let startButton = document.getElementById('start-button');
@@ -25,7 +25,7 @@ let currentPostionOfRound = 0;
 let onlyHumans = false;
 // wenn true, ist die APp im Show-Modus und der User schaut nur zu
 let showMode = false;
-let countdownToStart = 1;
+let countdownToStart = 5;
 let currentCountdownNumber = 0;
 // aktueller Spieler
 let currentPlayer = 1;
@@ -73,6 +73,13 @@ let namePlayer2 = document.querySelector("#name2").value;
 
 // Methode, die aufgerufen wird, sofern der Startbutton getätigt wird
 function startGame() {
+
+    namePlayer1 = document.querySelector("#name1").value;
+
+    namePlayer2 = document.querySelector("#name2").value;
+
+    anzahlMaximalerRunden = document.getElementById("anzahlMaxRunden").value;
+
     console.log('Das Spiel hat begonnen!');
     // starte bei Runde 1 beim ersten Start
     setCurrentRoundNr(currentRoundNr);
@@ -90,7 +97,7 @@ function startGame() {
     // starte Spiel je nach Optionen mit oder ohne Computer
     if (onlyHumans) {
 
-        console.log('showOverlay gestartet for humans!');
+        console.log('showOverlay gestartet for humans! with countdown:' + countdown.innerHTML);
         // Zeige Overlay
         showOverlay();
         // starte das Spiel
@@ -122,7 +129,7 @@ function showOverlay() {
 
 function showOverlayScreen() {
     // start ShowClickPath
-    overlay.style.display = "block";
+    overlay.style.display = "flex";
     // add STOP-EVENT zum OVERLAY
     cancelbutton.addEventListener('click', stopCountdown);
     // main so lange ausblenden
@@ -140,8 +147,8 @@ function startCountdown(duration) {
 
         minutes = minutes < 10 ? "0" + minutes : minutes;
         seconds = seconds < 10 ? "0" + seconds : seconds;
-
-        countdown.textContent = minutes + ":" + seconds;
+        document.getElementById('countdownElement').innerHTML = minutes + ":" + seconds;
+        document.getElementById('countdownElement').style = "color: red";
 
         if (--timer < 0) {
             clearInterval(countdown);
@@ -193,6 +200,7 @@ function tooglePlayer(playerNumber) {
 function stopCountdown() {
     clearInterval(countdown);
     // countdown ausblenden, also das overlay und main einblenden
+    document.getElementById("countdownElement").innerHTML = "";
     document.getElementById("overlay").style.display = "none";
     main.style.display = "block";
 }
@@ -407,6 +415,7 @@ function switchToGameScreen() {
     startScreen.style.display = "none";
     highscoreScreen.style.display = "none";
     gameEndResult.style.display = "none";
+    document.getElementById("anzahlMaxRunden1").innerHTML = anzahlMaximalerRunden;
 
 }
 
