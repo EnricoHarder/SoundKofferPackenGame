@@ -34,6 +34,8 @@ let isTwoPlayers = false;
 let blinkmode = false;
 let isFirstRound = false;
 
+let lastPoints = 0;
+
 let sound1;
 let sound2;
 let sound3;
@@ -234,10 +236,10 @@ function checkInput(event) {
         endOfRound();
 
     }
-    
 
 
-     else   if (currentRoundPlaylist.length > currentPostionOfRound) {
+
+    else if (currentRoundPlaylist.length > currentPostionOfRound) {
 
         if (checkCurrentElement(elementText)) {
 
@@ -247,39 +249,42 @@ function checkInput(event) {
         } else {
             exitGame();
         }
-        }
-        else if (currentRoundPlaylist.length == currentPostionOfRound) {
-            finishedInout = true;
-            console.log("END OF ITEMS IN THIS ROUND, NOW LIST HAS " + currentRoundPlaylist.length + " ITEMS IN CURREN Position ROUND " + currentPostionOfRound);
-            addElement(elementText);
-            endOfRound();
+    }
+    else if (currentRoundPlaylist.length == currentPostionOfRound) {
+        finishedInout = true;
+        console.log("END OF ITEMS IN THIS ROUND, NOW LIST HAS " + currentRoundPlaylist.length + " ITEMS IN CURREN Position ROUND " + currentPostionOfRound);
+        addElement(elementText);
+        endOfRound();
 
-        } else if (!finishedInout) {
+    } else if (!finishedInout) {
 
-            console.log("RUNDE BEENDET MIR DER PL: " + currentRoundPlaylist + " IN POSITION " + currentPostionOfRound);
-
-        }
-
-        console.log("CURRENT PLAYLIST: " + currentRoundPlaylist + " AND YOUR POSITION IS " + currentPostionOfRound);
+        console.log("RUNDE BEENDET MIR DER PL: " + currentRoundPlaylist + " IN POSITION " + currentPostionOfRound);
 
     }
+
+    console.log("CURRENT PLAYLIST: " + currentRoundPlaylist + " AND YOUR POSITION IS " + currentPostionOfRound);
+
+}
 
 
 
 function exitGame() {
     // overlay.innerText = "LEODER VERÖPREM";
     stopCountdown();
-    gameScreen.style.display = "none";
-    startScreen.style.display = "block";
-
+    // gameScreen.style.display = "none";
+    //startScreen.style.display = "block";
+    endGame()
 }
 
 function checkCurrentElement(element) {
     if (element == currentRoundPlaylist[currentPostionOfRound]) {
         return true;
     }
+    lastPoints = currentRoundNr;
     return false;
 }
+
+
 
 function addElement(element) {
     let arrayTmp = currentRoundPlaylist;
@@ -298,7 +303,7 @@ function endOfRound() {
 function player2StartReplayAndAddNewItem() {
     console.log("player2StartReplayAndAddNewItem  #");
 
-   
+
 
     if (finishedInout) {
 
@@ -318,7 +323,7 @@ function player2StartReplayAndAddNewItem() {
 
     currentPostionOfRound = 0;
 
-    
+
 }
 
 
@@ -357,11 +362,11 @@ function playerAddInput(indexx) {
 
     } else {
 
-    currentPostionOfRound++;
+        currentPostionOfRound++;
 
-    console.log("playerAddInput was ended with list: " + currentRoundPlaylist);
+        console.log("playerAddInput was ended with list: " + currentRoundPlaylist);
 
-}
+    }
 }
 
 function playerAddNewItem(indexx) {
@@ -548,13 +553,28 @@ function endGame() {
     startScreen.style.display = "none";
     highscoreScreen.style.display = "block";
     gameEndResult.style.display = "block";
-    gameEndResult.innerHTML = "Glückwunsch, Sie haben gewonnem!";
+    gameEndResult.style.backgroundColor = "black";
+    gameEndResult.style.color = "white";
+    if (currentPlayer == 1) {
+        gameEndResult.innerHTML = namePlayer1 + " HAT VERLOREN! MIT " + lastPoints + " PUNKTEN";
+    } else {
+    gameEndResult.innerHTML = namePlayer2+ " HAT VERLOREN! MIT " + lastPoints + " PUNKTEN";
+    }
 }
 
 function restartApp() {
-    playerPosition = 0;
-    document.getElementById("status").innerHTML = soundPlaylist;
-    startGame();
+    currentPostionOfRound = 0;
+    currentRoundPlaylist = [];
+    currentRoundNr = 1;
+    stopCountdown();
+    overlay.style.display = "none"; 
+    startScreen.style.display = "block";
+    highscoreScreen.style.display = "none";
+    main.style.display = "block";
+    initGrids();
+    currentPlayer = 1;
+    
+    // startGame();
 }
 
 
@@ -621,10 +641,10 @@ function generateRandomColor() {
 
 function playSound(item) {
 
-    item.classList.add('green-flash');
+    item.classList.add('green');
     setTimeout(() => {
-        item.classList.remove('green-flash');
-    }, 1000);
+        item.classList.remove('green');
+    }, 2000);
 
     if (item == gridItems[0]) { item = sounds[0]; }
     else if (item == gridItems[1]) { item = sounds[1]; }
