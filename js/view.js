@@ -32,6 +32,7 @@ let currentPlayer = 1;
 let finishedInout = false;
 let isTwoPlayers = false;
 let blinkmode = false;
+let isFirstRound = false;
 
 let sound1;
 let sound2;
@@ -223,6 +224,7 @@ function checkInput(event) {
     console.log("checkInput: " + elementText + " and booleab finishedInout = " + finishedInout + " WITH CURRENT PLAYLIST " + currentRoundPlaylist);
     // FIRST INITIAL ROUND
     if (currentRoundPlaylist.length == 0) {
+        isFirstRound = true;
         // SPIEL HAT GERADE BEGONNEN MIT LIST=0
         console.log("START GAME ########## NO LIST FOUND OR IS EMPTRY ####### " + currentRoundPlaylist.length);
         currentRoundPlaylist[0] = elementText;
@@ -232,40 +234,38 @@ function checkInput(event) {
         endOfRound();
 
     }
-    if (checkCurrentElement(elementText)){
+    
 
-  
-    if (currentRoundPlaylist.length > currentPostionOfRound) {
-        finishedInout = false;
-        console.log("CURRENT ROUND " + currentRoundPlaylist.length + " is BIGGER THAN " + currentPostionOfRound);
-        playerAddInput(elementText);
+
+     else   if (currentRoundPlaylist.length > currentPostionOfRound) {
+            finishedInout = false;
+            console.log("CURRENT ROUND " + currentRoundPlaylist.length + " is BIGGER THAN " + currentPostionOfRound);
+            playerAddInput(elementText);
+        }
+        else if (currentRoundPlaylist.length == currentPostionOfRound) {
+            finishedInout = true;
+            console.log("END OF ITEMS IN THIS ROUND, NOW LIST HAS " + currentRoundPlaylist.length + " ITEMS IN CURREN Position ROUND " + currentPostionOfRound);
+            addElement(elementText);
+            endOfRound();
+
+        } else if (!finishedInout) {
+
+            console.log("RUNDE BEENDET MIR DER PL: " + currentRoundPlaylist + " IN POSITION " + currentPostionOfRound);
+
+        }
+
+        console.log("CURRENT PLAYLIST: " + currentRoundPlaylist + " AND YOUR POSITION IS " + currentPostionOfRound);
+
     }
-    else if (currentRoundPlaylist.length == currentPostionOfRound) {
-        finishedInout = true;
-        console.log("END OF ITEMS IN THIS ROUND, NOW LIST HAS " + currentRoundPlaylist.length + " ITEMS IN CURREN Position ROUND " + currentPostionOfRound);
-        addElement(elementText);
-        endOfRound();
 
-    } else if (!finishedInout) {
 
-        console.log("RUNDE BEENDET MIR DER PL: " + currentRoundPlaylist + " IN POSITION " + currentPostionOfRound);
-
-    }
-
-    console.log("CURRENT PLAYLIST: " + currentRoundPlaylist + " AND YOUR POSITION IS " + currentPostionOfRound);
-} else {
-    console.log("SSSSSSSSSSSSSSTTTTTTTTTTTTTOOOOOOOOOPPPPPPPPPP");
-    exitGame();
-}
-
-}
 
 function exitGame() {
     // overlay.innerText = "LEODER VERÖPREM";
     stopCountdown();
     gameScreen.style.display = "none";
     startScreen.style.display = "block";
- 
+
 }
 
 function checkCurrentElement(element) {
@@ -285,12 +285,24 @@ function addElement(element) {
 
 function endOfRound() {
     console.log("########## ENDE FÜR " + currentPlayer + " ########## BEI RUNDE " + currentRoundNr + " POSITION:" + currentPostionOfRound);
-    
+
     player2StartReplayAndAddNewItem();
 }
 
 function player2StartReplayAndAddNewItem() {
     console.log("player2StartReplayAndAddNewItem  #");
+
+   
+
+    if (finishedInout) {
+
+
+
+        let numberPlus = currentRoundNr + 1;
+        setCurrentRoundNr(numberPlus);
+    }
+
+    startReplay();
 
     if (currentPlayer == 1) {
         tooglePlayer(2);
@@ -298,14 +310,9 @@ function player2StartReplayAndAddNewItem() {
         tooglePlayer(1);
     }
 
-    if (finishedInout) {
-        let numberPlus = currentRoundNr + 1;
-        setCurrentRoundNr(numberPlus);
-    }
-
     currentPostionOfRound = 0;
 
-    startReplay();
+    
 }
 
 
@@ -338,15 +345,17 @@ function playerAddInput(indexx) {
 
     console.log("playerAddInput number " + indexx + " was started");
 
-    if (finishedInout) {
+    if (finishedInout && !isFirstRound) {
         addElement(indexx);
+        currentPostionOfRound = 0;
 
-    }
+    } else {
 
     currentPostionOfRound++;
 
     console.log("playerAddInput was ended with list: " + currentRoundPlaylist);
 
+}
 }
 
 function playerAddNewItem(indexx) {
