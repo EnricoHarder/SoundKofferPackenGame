@@ -238,9 +238,15 @@ function checkInput(event) {
 
 
      else   if (currentRoundPlaylist.length > currentPostionOfRound) {
+
+        if (checkCurrentElement(elementText)) {
+
             finishedInout = false;
             console.log("CURRENT ROUND " + currentRoundPlaylist.length + " is BIGGER THAN " + currentPostionOfRound);
             playerAddInput(elementText);
+        } else {
+            exitGame();
+        }
         }
         else if (currentRoundPlaylist.length == currentPostionOfRound) {
             finishedInout = true;
